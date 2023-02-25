@@ -19,7 +19,7 @@ class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
 class GroupViewSet(ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [IsManagerOrReadOnly]
+    # permission_classes = [IsManagerOrReadOnly]
 
     def post(self, request):
         serializer = GroupSerializer(data=request.data)
@@ -32,11 +32,11 @@ class GroupViewSet(ModelViewSet):
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    permission_classes = [IsManagerOrReadOnly]
+    # permission_classes = [IsManagerOrReadOnly]
 
-    def post(self, request):
-        serializer = CourseSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request):
+    #     serializer = CourseSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(status=status.HTTP_201_CREATED)
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
