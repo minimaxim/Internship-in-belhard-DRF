@@ -12,4 +12,4 @@ class CourseSerializer(ModelSerializer):
 class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
-        fields = ['id', 'number', 'date_start', 'audience', 'course', 'users']
+        fields = ['id', 'number', 'date_start', 'audience', 'course']

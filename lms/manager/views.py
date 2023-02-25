@@ -21,12 +21,12 @@ class GroupViewSet(ModelViewSet):
     serializer_class = GroupSerializer
     # permission_classes = [IsManagerOrReadOnly]
 
-    def post(self, request):
-        serializer = GroupSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request):
+    #     serializer = GroupSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(status=status.HTTP_201_CREATED)
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CourseViewSet(ModelViewSet):
