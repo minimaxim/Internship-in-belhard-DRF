@@ -90,7 +90,9 @@ class Role(models.Model):
 
 class Audience(models.Model):
     number = models.SmallIntegerField(default=0, verbose_name='номер аудитории')
+    # вынести адрес в отдельную таблицу
     address = models.CharField(max_length=64, verbose_name='адрес')
+    # is_online добавить в модель
     format = models.ForeignKey('Training_Format', on_delete=models.PROTECT, verbose_name=" формат обучения")
 
     def __str__(self):
@@ -103,8 +105,8 @@ class Audience(models.Model):
         verbose_name_plural = 'аудитории'
         verbose_name = 'аудитория'
 
-
-class Training_Format(models.Model):
+# убрать эту модель
+class TrainingFormat(models.Model):
     is_online = models.BooleanField(default=True, verbose_name='онлайн обучение')
 
     def __str__(self):
@@ -132,7 +134,7 @@ class Course(models.Model):
         verbose_name = 'Курсы'
 
 
-class Payment_info(models.Model):
+class PaymentInfo(models.Model):
     first_paid_date = models.DateField(blank=True, verbose_name='дата 1-ой оплаты')
     first_paid_amount = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='сумма 1-ой оплаты')
     sec_paid_date = models.DateField(blank=True, verbose_name='дата 2-ой оплаты')
