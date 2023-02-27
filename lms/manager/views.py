@@ -1,9 +1,8 @@
-from rest_framework import status
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, SAFE_METHODS
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
 from rest_framework.viewsets import ModelViewSet
-from .models import Group, Course
-from .serializers import GroupSerializer, CourseSerializer
+
+from .models import Group, Course, Category, Audience, Address
+from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer
 
 
 class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
@@ -16,27 +15,27 @@ class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
             request.user.is_staff
         )
 
+
 class GroupViewSet(ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    # permission_classes = [IsManagerOrReadOnly]
-
-    # def post(self, request):
-    #     serializer = GroupSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(status=status.HTTP_201_CREATED)
-    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    # permission_classes = [IsManagerOrReadOnly]
 
-    # def post(self, request):
-    #     serializer = CourseSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(status=status.HTTP_201_CREATED)
-    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class AudienceViewSet(ModelViewSet):
+    queryset = Audience.objects.all()
+    serializer_class = AudienceSerializer
+
+
+class AddressViewSet(ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer

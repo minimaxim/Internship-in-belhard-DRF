@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -7,7 +6,6 @@ class Group(models.Model):
     date_start = models.DateField(blank=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=True, verbose_name="курс")
-
 
     class Meta:
         verbose_name_plural = 'группы'
@@ -27,73 +25,35 @@ class User(models.Model):
         return self.first_name
 
     class Meta:
-        verbose_name_plural = 'Студенты'
-        verbose_name = 'Студент'
+        verbose_name_plural = 'пользователи'
+        verbose_name = 'пользователи'
+
 
 class GroupUsers(models.Model):
     user_id = models.ForeignKey('User', blank=False, on_delete=models.PROTECT, verbose_name="студент",
-                                    default='Иванов')
+                                default='Иванов')
     group_id = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
     class Meta:
-        verbose_name_plural = 'Группа-юзер'
+        verbose_name_plural = 'группа-юзер'
         verbose_name = 'группа-юзер'
 
 
-class Manager(models.Model):
-    first_name = models.CharField(max_length=64, verbose_name='Имя')
-    last_name = models.CharField(max_length=64, verbose_name='Фамилия')
-    email = models.EmailField(max_length=64, unique=True, blank=False, verbose_name='емайл')
-    role = models.ForeignKey('Role', blank=False, on_delete=models.PROTECT, verbose_name='роль пользователя')
-
-    def __str__(self):
-        return self.first_name
-
-    class Meta:
-        verbose_name_plural = 'Менеджеры'
-        verbose_name = 'Менеджер'
-
-class Mentor(models.Model):
-    first_name = models.CharField(max_length=64, verbose_name='Имя')
-    last_name = models.CharField(max_length=64, verbose_name='Фамилия')
-    email = models.EmailField(max_length=64, unique=True, blank=False, verbose_name='емайл')
-    role = models.ForeignKey('Role', blank=False, on_delete=models.PROTECT, verbose_name='роль пользователя')
-
-    def __str__(self):
-        return self.first_name
-
-    class Meta:
-        verbose_name_plural = 'Менторы'
-        verbose_name = 'Ментор'
-
-class Admin(models.Model):
-    first_name = models.CharField(max_length=64, verbose_name='Имя')
-    last_name = models.CharField(max_length=64, verbose_name='Фамилия')
-    role = models.ForeignKey('Role', blank=False, on_delete=models.PROTECT, verbose_name='роль пользователя')
-
-    def __str__(self):
-        return self.first_name
-
-    class Meta:
-        verbose_name_plural = 'Админы'
-        verbose_name = 'Админ'
-
 class Role(models.Model):
-
     name = models.CharField(max_length=10, unique=True, verbose_name='роль пользователя', null=True, default='студент')
+
     class Meta:
         verbose_name_plural = 'роль пользователя'
         verbose_name = 'роль пользователя'
+
     def __str__(self):
         return self.name
 
 
 class Audience(models.Model):
-    number = models.SmallIntegerField(default=0, verbose_name='номер аудитории')
-    # вынести адрес в отдельную таблицу
-    address = models.CharField(max_length=64, verbose_name='адрес')
-    # is_online добавить в модель
-    format = models.ForeignKey('Training_Format', on_delete=models.PROTECT, verbose_name=" формат обучения")
+    number = models.SmallIntegerField(default=1, verbose_name='номер аудитории')
+    is_online = models.BooleanField(verbose_name='онлайн')
+    address = models.ForeignKey('Address', on_delete=models.PROTECT, verbose_name="адрес аудитории")
 
     def __str__(self):
         return str(self.number)
@@ -105,19 +65,16 @@ class Audience(models.Model):
         verbose_name_plural = 'аудитории'
         verbose_name = 'аудитория'
 
-# убрать эту модель
-class TrainingFormat(models.Model):
-    is_online = models.BooleanField(default=True, verbose_name='онлайн обучение')
+
+class Address(models.Model):
+    address_name = models.CharField(max_length=64, verbose_name='адрес')
 
     def __str__(self):
-        if self.is_online == True:
-            return 'онлайн'
-        else:
-            return 'оффлайн'
+        return str(self.address_name)
 
     class Meta:
-        verbose_name_plural = 'формат обучения'
-        verbose_name = 'формат обучения'
+        verbose_name_plural = 'адреса'
+        verbose_name = 'адрес'
 
 
 class Course(models.Model):
@@ -126,12 +83,13 @@ class Course(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='стоимость')
     category = models.ForeignKey('Category', verbose_name='категория', on_delete=models.PROTECT)
 
+
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Курсы'
-        verbose_name = 'Курсы'
+        verbose_name_plural = 'курсы'
+        verbose_name = 'курсы'
 
 
 class PaymentInfo(models.Model):
@@ -155,12 +113,14 @@ class RolePermission(models.Model):
 
 
 class Permission(models.Model):
-    name = models.CharField(max_length=20, unique=True, verbose_name='права пользователя ', null=True, default='все права')
+    name = models.CharField(max_length=20, unique=True, verbose_name='права пользователя ', null=True,
+                            default='все права')
     journal = models.BooleanField
 
     class Meta:
         verbose_name_plural = 'разрешение'
         verbose_name = 'разрешение'
+
     def __str__(self):
         return self.name
 
@@ -175,16 +135,18 @@ class Lesson(models.Model):
 
 
 class LessonMaterial(models.Model):
-    file = models.FileField(upload_to='#', storage=None, max_length=100,)
+    file = models.FileField(upload_to='#', storage=None, max_length=100, )
     name = models.CharField(max_length=64, blank=False, null=True)
 
     class Meta:
         verbose_name_plural = 'учебные материалы'
         verbose_name = 'учебные материалы'
 
+
 class Feedback(models.Model):
     user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE, default='0')
     text = models.TextField(max_length=350, verbose_name='отзыв', null=True)
+
     class Meta:
         verbose_name_plural = 'отзывы'
         verbose_name = 'отзывы'
