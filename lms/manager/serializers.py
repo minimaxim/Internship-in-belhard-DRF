@@ -6,7 +6,7 @@ from .models import Group, Course, Category, Audience, Address
 class CourseSerializer(ModelSerializer):
     class Meta:
         model = Course
-        fields = ['id', 'name', 'price', 'category']
+        fields = ['id', 'name', 'price', 'category', 'duration']
 
 
 class GroupSerializer(ModelSerializer):
