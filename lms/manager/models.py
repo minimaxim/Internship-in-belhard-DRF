@@ -6,6 +6,7 @@ class Group(models.Model):
     date_start = models.DateField(blank=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=True, verbose_name="курс")
+    mentor = models.ForeignKey('User', on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
     class Meta:
         verbose_name_plural = 'группы'
@@ -19,7 +20,7 @@ class User(models.Model):
     first_name = models.CharField(max_length=64, verbose_name='Имя')
     last_name = models.CharField(max_length=64, verbose_name='Фамилия')
     email = models.EmailField(max_length=64, unique=True, blank=False, verbose_name='емайл')
-    role = models.ForeignKey('Role', null=False, on_delete=models.PROTECT, verbose_name='роль пользователя')
+    role = models.ForeignKey('Role', on_delete=models.PROTECT,blank=False, verbose_name="роль пользователя")
 
     def __str__(self):
         return self.first_name

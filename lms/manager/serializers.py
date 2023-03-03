@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Group, Course, Category, Audience, Address
+from .models import Group, Course, Category, Audience, Address, User, Role
 
 
 class CourseSerializer(ModelSerializer):
@@ -12,16 +12,14 @@ class CourseSerializer(ModelSerializer):
 class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
-        fields = ['id', 'number', 'date_start', 'audience', 'course']
+        fields = ['id', 'number', 'date_start', 'audience', 'course', 'mentor']
+
 
 
 class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
-
-
-
 
 
 class AudienceSerializer(ModelSerializer):
@@ -35,3 +33,15 @@ class AddressSerializer(ModelSerializer):
     class Meta:
         model = Address
         fields = ['id', 'address_name']
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'role']
+
+
+class RoleSerializer(ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['id', 'name']
