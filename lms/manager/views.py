@@ -1,9 +1,9 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Group, Course, Category, Audience, Address, User, Role
+from .models import Group, Course, Category, Audience, Address, User, Role, Mentor
 from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
-    UserSerializer, RoleSerializer
+    UserSerializer, RoleSerializer, MentorSerializer
 
 
 class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
@@ -51,3 +51,8 @@ class UserViewSet(ModelViewSet):
 class RoleViewSet(ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
+
+
+class MentorViewSet(ModelViewSet):
+    queryset = Mentor.objects.all()
+    serializer_class = MentorSerializer

@@ -1,12 +1,24 @@
 from django.db import models
 
 
+class Mentor(models.Model):
+    role_id = models.ForeignKey('Role', on_delete=models.PROTECT, null=False, verbose_name="роль")
+    user_id = models.ForeignKey('User',  on_delete=models.PROTECT, null=True, verbose_name="пользователь")
+
+    def __int__(self):
+        return self.user_id
+
+    class Meta:
+        verbose_name = 'ментор'
+        verbose_name_plural = 'менторы'
+
+
 class Group(models.Model):
     number = models.SmallIntegerField(default=0, verbose_name='номер группы')
     date_start = models.DateField(blank=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=True, verbose_name="курс")
-    mentor = models.ForeignKey('User', on_delete=models.PROTECT, null=True, verbose_name="ментор")
+    mentor = models.ForeignKey('Mentor', on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
     class Meta:
         verbose_name_plural = 'группы'
