@@ -1,38 +1,26 @@
 from django.db import models
 
 
-class Mentor(models.Model):
-    role_id = models.ForeignKey('Role', on_delete=models.PROTECT, null=False, verbose_name="роль")
-    user_id = models.ForeignKey('User',  on_delete=models.PROTECT, null=True, verbose_name="пользователь")
-
-    def __int__(self):
-        return self.user_id
-
-    class Meta:
-        verbose_name = 'ментор'
-        verbose_name_plural = 'менторы'
-
-
 class Group(models.Model):
     number = models.SmallIntegerField(default=0, verbose_name='номер группы')
     date_start = models.DateField(blank=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=True, verbose_name="курс")
-    mentor = models.ForeignKey('Mentor', on_delete=models.PROTECT, null=True, verbose_name="ментор")
+    mentor = models.ForeignKey('User', on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
     class Meta:
         verbose_name_plural = 'группы'
         verbose_name = 'группа'
 
     def __int__(self):
-        return self.number, self.audience
+        return self.number
 
 
 class User(models.Model):
     first_name = models.CharField(max_length=64, verbose_name='Имя')
     last_name = models.CharField(max_length=64, verbose_name='Фамилия')
     email = models.EmailField(max_length=64, unique=True, blank=False, verbose_name='емайл')
-    role = models.ForeignKey('Role', on_delete=models.PROTECT,blank=False, verbose_name="роль пользователя")
+    role = models.ForeignKey('Role', on_delete=models.PROTECT, blank=False, verbose_name="роль пользователя")
 
     def __str__(self):
         return self.first_name
@@ -95,7 +83,6 @@ class Course(models.Model):
     name = models.CharField(max_length=64, verbose_name='название курса', unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='стоимость')
     category = models.ForeignKey('Category', verbose_name='категория', on_delete=models.PROTECT)
-
 
     def __str__(self):
         return self.name
