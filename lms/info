@@ -1,0 +1,3 @@
+djoser
+
+pip install djangorestframework simplejwt
