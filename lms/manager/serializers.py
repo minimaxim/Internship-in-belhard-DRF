@@ -31,3 +31,15 @@ class AddressSerializer(ModelSerializer):
     class Meta:
         model = Address
         fields = ['id', 'address_name']
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'role']
+
+
+class RoleSerializer(ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['id', 'name']

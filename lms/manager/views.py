@@ -1,8 +1,12 @@
+from rest_framework import request
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Group, Course, Category, Audience, Address
-from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer
+from .models import Group, Course, Category, Audience, Address, User, Role
+from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
+    UserSerializer, RoleSerializer
 
 
 class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
@@ -39,3 +43,16 @@ class AudienceViewSet(ModelViewSet):
 class AddressViewSet(ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    http_method_names = ['post', ]
+
+
+class RoleViewSet(ModelViewSet):
+    queryset = Role.objects.all()
+    serializer_class = RoleSerializer
+    http_method_names = ['get',]
+
