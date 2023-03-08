@@ -3,9 +3,9 @@ from django.db import models
 
 class Group(models.Model):
     number = models.SmallIntegerField(default=0, verbose_name='номер группы')
-    date_start = models.DateField(blank=True, verbose_name='дата начала')
+    date_start = models.DateField(null=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
-    course = models.ForeignKey('Course', on_delete=models.PROTECT, null=True, verbose_name="курс")
+    course = models.ForeignKey('Course', on_delete=models.PROTECT, null=False, verbose_name="курс")
     mentor = models.ForeignKey('User', on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
     class Meta:
@@ -17,10 +17,10 @@ class Group(models.Model):
 
 
 class User(models.Model):
-    first_name = models.CharField(max_length=64, verbose_name='Имя')
-    last_name = models.CharField(max_length=64, verbose_name='Фамилия')
-    email = models.EmailField(max_length=64, unique=True, blank=False, verbose_name='емайл')
-    role = models.ForeignKey('Role', on_delete=models.PROTECT, blank=False, verbose_name="роль пользователя")
+    first_name = models.CharField(max_length=64, verbose_name='имя')
+    last_name = models.CharField(max_length=64, verbose_name='фамилия')
+    email = models.EmailField(max_length=64, unique=True, null=False, verbose_name='е-майл')
+    role = models.ForeignKey('Role', on_delete=models.PROTECT, null=True, verbose_name="роль пользователя")
 
     def __str__(self):
         return self.first_name
@@ -31,9 +31,9 @@ class User(models.Model):
 
 
 class GroupUsers(models.Model):
-    user_id = models.ForeignKey('User', blank=False, on_delete=models.PROTECT, verbose_name="студент",
+    user = models.ForeignKey('User', null=False, on_delete=models.PROTECT, verbose_name="студент",
                                 default='Иванов')
-    group_id = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
+    group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
     class Meta:
         verbose_name_plural = 'группа-юзер'
@@ -93,9 +93,9 @@ class Course(models.Model):
 
 
 class PaymentInfo(models.Model):
-    first_paid_date = models.DateField(blank=True, verbose_name='дата 1-ой оплаты')
+    first_paid_date = models.DateField(null=True, verbose_name='дата 1-ой оплаты')
     first_paid_amount = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='сумма 1-ой оплаты')
-    sec_paid_date = models.DateField(blank=True, verbose_name='дата 2-ой оплаты')
+    sec_paid_date = models.DateField(null=True, verbose_name='дата 2-ой оплаты')
     sec_paid_amount = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='сумма 2-ой оплаты')
 
     class Meta:
@@ -104,8 +104,8 @@ class PaymentInfo(models.Model):
 
 
 class RolePermission(models.Model):
-    role_id = models.ForeignKey('Role', blank=False, on_delete=models.PROTECT, verbose_name="статус пользователя")
-    name = models.ForeignKey('Permission', blank=False, on_delete=models.PROTECT, verbose_name="права пользователя")
+    role = models.ForeignKey('Role', null=False, on_delete=models.PROTECT, verbose_name="статус пользователя")
+    name = models.ForeignKey('Permission', null=False, on_delete=models.PROTECT, verbose_name="права пользователя")
 
     class Meta:
         verbose_name_plural = 'роль-разрешение'
@@ -136,7 +136,7 @@ class Lesson(models.Model):
 
 class LessonMaterial(models.Model):
     file = models.FileField(upload_to='#', storage=None, max_length=100, )
-    name = models.CharField(max_length=64, blank=False, null=True)
+    name = models.CharField(max_length=64, null=False)
 
     class Meta:
         verbose_name_plural = 'учебные материалы'
