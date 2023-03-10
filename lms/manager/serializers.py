@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Group, Course, Category, Audience, Address, User, Role
+from .models import Group, Course, Category, Audience, Address, User, Role, Schedule
 
 
 class CourseSerializer(ModelSerializer):
@@ -43,3 +43,9 @@ class RoleSerializer(ModelSerializer):
     class Meta:
         model = Role
         fields = ['id', 'name']
+
+
+class ScheduleSerializer(ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = ['id', 'days', 'group']

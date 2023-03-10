@@ -8,12 +8,12 @@ class Group(models.Model):
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=False, verbose_name="курс")
     mentor = models.ForeignKey('User', on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
+    def __str__(self):
+        return str(self.number)
+
     class Meta:
         verbose_name_plural = 'группы'
         verbose_name = 'группа'
-
-    def __int__(self):
-        return self.number
 
 
 class User(models.Model):
@@ -35,6 +35,9 @@ class GroupUsers(models.Model):
                                 default='Иванов')
     group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name_plural = 'группа-юзер'
         verbose_name = 'группа-юзер'
@@ -47,8 +50,7 @@ class Role(models.Model):
         verbose_name_plural = 'роль пользователя'
         verbose_name = 'роль пользователя'
 
-    def __str__(self):
-        return self.name
+
 
 
 class Audience(models.Model):
@@ -59,9 +61,6 @@ class Audience(models.Model):
     def __str__(self):
         return str(self.number)
 
-    def __int__(self):
-        return self.number
-
     class Meta:
         verbose_name_plural = 'аудитории'
         verbose_name = 'аудитория'
@@ -71,7 +70,7 @@ class Address(models.Model):
     address_name = models.CharField(max_length=64, verbose_name='адрес')
 
     def __str__(self):
-        return str(self.address_name)
+        return self.address_name
 
     class Meta:
         verbose_name_plural = 'адреса'
@@ -117,30 +116,14 @@ class Permission(models.Model):
                             default='все права')
     journal = models.BooleanField
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name_plural = 'разрешение'
         verbose_name = 'разрешение'
 
-    def __str__(self):
-        return self.name
 
-
-class Lesson(models.Model):
-    day = models.DateTimeField(verbose_name='дата и время урока')
-    url = models.ForeignKey('LessonMaterial', on_delete=models.PROTECT)
-
-    class Meta:
-        verbose_name_plural = 'урок'
-        verbose_name = 'урок'
-
-
-class LessonMaterial(models.Model):
-    file = models.FileField(upload_to='#', storage=None, max_length=100, )
-    name = models.CharField(max_length=64, null=False)
-
-    class Meta:
-        verbose_name_plural = 'учебные материалы'
-        verbose_name = 'учебные материалы'
 
 
 class Feedback(models.Model):
@@ -161,3 +144,12 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'категория'
         verbose_name = 'категория'
+
+
+class Schedule(models.Model):
+    days = models.JSONField(verbose_name='дата и время занятий', null=False)
+    group = models.ForeignKey('Group', on_delete=models.PROTECT, null=False, verbose_name="номер группы")
+
+    class Meta:
+        verbose_name_plural = 'расписания'
+        verbose_name = 'расписание'
