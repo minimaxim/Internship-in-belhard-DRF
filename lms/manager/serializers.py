@@ -48,4 +48,4 @@ class RoleSerializer(ModelSerializer):
 class ScheduleSerializer(ModelSerializer):
     class Meta:
         model = Schedule
-        fields = ['id', 'days', 'group']
+        fields = ['id', 'day', 'group']

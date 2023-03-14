@@ -147,7 +147,7 @@ class Category(models.Model):
 
 
 class Schedule(models.Model):
-    days = models.JSONField(verbose_name='дата и время занятий', null=False)
+    day = models.DateTimeField(verbose_name='дата и время занятий', null=False)
     group = models.ForeignKey('Group', on_delete=models.PROTECT, null=False, verbose_name="номер группы")
 
     class Meta:
