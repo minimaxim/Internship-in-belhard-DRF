@@ -74,6 +74,7 @@ class ScheduleViewSet(ModelViewSet):
             except:
                 pass
     # Ниже функция с которой данные сохраняются, но сохраняются в таком виде http://joxi.ru/Dr8bEzacDy7742 . Данные сохранялись т.к. явно вызвал self.perform_create(serializer), без него не сохранялось
+    # Список дат передать не смог чтобы несколько дат передать в одном id
 
     # def create(self, request, *args, **kwargs):
     #     day = [request.data.get('day')]
