@@ -1,4 +1,5 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import IntegerField, ListField, FloatField, DateTimeField
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from .models import Group, Course, Category, Audience, Address, User, Role, Schedule
 
@@ -45,7 +46,14 @@ class RoleSerializer(ModelSerializer):
         fields = ['id', 'name']
 
 
-class ScheduleSerializer(ModelSerializer):
-    class Meta:
-        model = Schedule
-        fields = ['id', 'day', 'group']
+class ScheduleSerializer(Serializer):
+    def create(self, validated_data):
+        return validated_data
+
+    def update(self, instance, validated_data):
+        pass
+
+    group = IntegerField()
+    days = ListField(min_length=1, child=FloatField())
+
+

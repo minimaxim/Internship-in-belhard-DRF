@@ -50,9 +50,6 @@ class Role(models.Model):
         verbose_name_plural = 'роль пользователя'
         verbose_name = 'роль пользователя'
 
-
-
-
 class Audience(models.Model):
     number = models.SmallIntegerField(default=1, verbose_name='номер аудитории')
     is_online = models.BooleanField(verbose_name='онлайн')
@@ -147,7 +144,7 @@ class Category(models.Model):
 
 
 class Schedule(models.Model):
-    day = models.DateTimeField(verbose_name='дата и время занятий', null=False)
+    days = models.DateTimeField(verbose_name='дата и время занятий', null=False)
     group = models.ForeignKey('Group', on_delete=models.PROTECT, null=False, verbose_name="номер группы")
 
     class Meta:
