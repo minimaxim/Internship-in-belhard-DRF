@@ -67,7 +67,7 @@ class ScheduleViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             for day in days:
-                day = datetime.fromisoformat(day)
+                day = datetime.fromtimestamp(day)
                 schedule = Schedule(days=day)
                 try:
                     schedule.save()

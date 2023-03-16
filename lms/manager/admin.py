@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Group, Audience, Category, Course
+from .models import Group, Audience, Category, Course, Role, Schedule
 
 
 @admin.register(Group)
@@ -24,3 +24,16 @@ class Course(admin.ModelAdmin):
 class Category(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
+
+@admin.register(Role)
+class Category(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
+@admin.register(Schedule)
+class Category(admin.ModelAdmin):
+    list_display = ('days', 'group')
+    search_fields = ('group',)
+
