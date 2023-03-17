@@ -35,5 +35,5 @@ class Category(admin.ModelAdmin):
 @admin.register(Schedule)
 class Category(admin.ModelAdmin):
     list_display = ('days', 'group')
-    search_fields = ('group',)
+
 
