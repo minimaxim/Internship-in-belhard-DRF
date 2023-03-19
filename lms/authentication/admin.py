@@ -1,3 +1,49 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .models import CustomUser, Role
 
-# Register your models here.
+
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+
+
+class CustomUserAdmin(UserAdmin):
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
+    model = CustomUser
+    list_display = ['email', 'username', 'role']
+
+    add_fieldsets = (
+        *UserAdmin.add_fieldsets,
+        (
+            'Custom fields',
+            {
+                'fields': (
+                    'role',
+                )
+            }
+        )
+    )
+    fieldsets = (
+        *UserAdmin.fieldsets,
+        (
+            'Custom fields',
+            {
+                'fields': (
+                    'role',
+                )
+            }
+        )
+    )
+
+
+admin.site.register(CustomUser, CustomUserAdmin)
+
+
+
+
+
+
