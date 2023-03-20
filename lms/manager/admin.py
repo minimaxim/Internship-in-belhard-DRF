@@ -34,6 +34,6 @@ class Category(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class Category(admin.ModelAdmin):
-    list_display = ('days', 'group')
+    list_display = ('lesson_day', 'group')
     search_fields = ('group',)
 

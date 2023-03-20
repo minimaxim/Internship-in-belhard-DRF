@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
 from rest_framework.response import Response
@@ -63,17 +64,17 @@ class ScheduleViewSet(ModelViewSet):
     serializer_class = ScheduleSerializer
 
     def create(self, request, *args, **kwargs):
-        days = request.data.get('days')
+        lesson_day = request.data.get('lesson_day')
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            for day in days:
+            group = get_object_or_404(Group, pk=request.data.get('group'))
+            for day in lesson_day:
                 day = datetime.fromtimestamp(day)
-                schedule = Schedule(days=day)
+                schedule = Schedule(lesson_day=day, group=group)
                 try:
                     schedule.save()
                 except:
                     pass
-            self.perform_create(serializer)
         header = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=header)
 

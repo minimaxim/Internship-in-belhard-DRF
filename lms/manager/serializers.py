@@ -54,6 +54,10 @@ class ScheduleSerializer(Serializer):
         pass
 
     group = IntegerField()
-    days = ListField(min_length=1, child=FloatField())
+    lesson_day = ListField(min_length=1, child=FloatField())
+
+
+
+
 
 

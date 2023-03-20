@@ -32,7 +32,7 @@ class User(models.Model):
 
 class GroupUsers(models.Model):
     user = models.ForeignKey('User', null=False, on_delete=models.PROTECT, verbose_name="студент",
-                                default='Иванов')
+                             default='Иванов')
     group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
     def __str__(self):
@@ -49,6 +49,7 @@ class Role(models.Model):
     class Meta:
         verbose_name_plural = 'роль пользователя'
         verbose_name = 'роль пользователя'
+
 
 class Audience(models.Model):
     number = models.SmallIntegerField(default=1, verbose_name='номер аудитории')
@@ -121,8 +122,6 @@ class Permission(models.Model):
         verbose_name = 'разрешение'
 
 
-
-
 class Feedback(models.Model):
     user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE, default='0')
     text = models.TextField(max_length=350, verbose_name='отзыв', null=True)
@@ -144,8 +143,8 @@ class Category(models.Model):
 
 
 class Schedule(models.Model):
-    days = models.DateTimeField(verbose_name='дата и время занятий', null=False)
-    group = models.ForeignKey('Group', on_delete=models.PROTECT, null=False, verbose_name="номер группы")
+    lesson_day = models.DateTimeField(verbose_name='дата и время занятия', null=False)
+    group = models.IntegerField(null=False, verbose_name="номер группы")
 
     class Meta:
         verbose_name_plural = 'расписания'
