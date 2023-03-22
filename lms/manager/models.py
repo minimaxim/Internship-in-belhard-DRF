@@ -100,28 +100,6 @@ class PaymentInfo(models.Model):
         verbose_name = 'статус оплаты'
 
 
-class RolePermission(models.Model):
-    role = models.ForeignKey('Role', null=False, on_delete=models.PROTECT, verbose_name="статус пользователя")
-    name = models.ForeignKey('Permission', null=False, on_delete=models.PROTECT, verbose_name="права пользователя")
-
-    class Meta:
-        verbose_name_plural = 'роль-разрешение'
-        verbose_name = 'роль-разрешение'
-
-
-class Permission(models.Model):
-    name = models.CharField(max_length=20, unique=True, verbose_name='права пользователя ', null=True,
-                            default='все права')
-    journal = models.BooleanField
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = 'разрешение'
-        verbose_name = 'разрешение'
-
-
 class Feedback(models.Model):
     user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE, default='0')
     text = models.TextField(max_length=350, verbose_name='отзыв', null=True)
@@ -143,7 +121,7 @@ class Category(models.Model):
 
 
 class Schedule(models.Model):
-    lesson_day = models.DateTimeField(verbose_name='дата и время занятия', null=False)
+    day = models.DateTimeField(verbose_name='дата и время занятия', null=False)
     group = models.IntegerField(null=False, verbose_name="номер группы")
 
     class Meta:

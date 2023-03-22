@@ -64,18 +64,16 @@ class ScheduleViewSet(ModelViewSet):
     serializer_class = ScheduleSerializer
 
     def create(self, request, *args, **kwargs):
-        lesson_day = request.data.get('lesson_day')
+        days = request.data.get('days')
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             group = get_object_or_404(Group, pk=request.data.get('group'))
-            for day in lesson_day:
+            for day in days:
                 day = datetime.fromtimestamp(day)
-                schedule = Schedule(lesson_day=day, group=group)
+                schedule = Schedule(day=day, group=group)
                 try:
                     schedule.save()
                 except:
                     pass
         header = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=header)
-
-
