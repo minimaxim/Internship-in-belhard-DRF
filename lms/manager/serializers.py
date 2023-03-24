@@ -1,7 +1,7 @@
 from rest_framework.fields import IntegerField, ListField, FloatField
 from rest_framework.serializers import ModelSerializer, Serializer
 
-from .models import Group, Course, Category, Audience, Address, User, Role, Schedule
+from .models import Group, Course, Category, Audience, Address, User, Role
 
 
 class CourseSerializer(ModelSerializer):
