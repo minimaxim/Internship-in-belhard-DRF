@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Group(models.Model):
-    number = models.SmallIntegerField(default=0, verbose_name='номер группы')
+    number = models.PositiveSmallIntegerField(verbose_name='номер группы')
     date_start = models.DateField(null=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=False, verbose_name="курс")
@@ -52,7 +52,7 @@ class Role(models.Model):
 
 
 class Audience(models.Model):
-    number = models.SmallIntegerField(default=1, verbose_name='номер аудитории')
+    number = models.PositiveSmallIntegerField(verbose_name='номер аудитории')
     is_online = models.BooleanField(verbose_name='онлайн')
     address = models.ForeignKey('Address', on_delete=models.PROTECT, verbose_name="адрес аудитории")
 
@@ -76,7 +76,7 @@ class Address(models.Model):
 
 
 class Course(models.Model):
-    duration = models.PositiveSmallIntegerField(default=0, verbose_name='продолжительность обучения в днях')
+    duration = models.PositiveSmallIntegerField(verbose_name='продолжительность обучения в днях')
     name = models.CharField(max_length=64, verbose_name='название курса', unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='стоимость')
     category = models.ForeignKey('Category', verbose_name='категория', on_delete=models.PROTECT)
@@ -102,7 +102,7 @@ class PaymentInfo(models.Model):
 
 class Feedback(models.Model):
     user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE, default='0')
-    text = models.TextField(max_length=350, verbose_name='отзыв', null=True)
+    text = models.CharField(max_length=350, verbose_name='отзыв', null=True)
 
     class Meta:
         verbose_name_plural = 'отзывы'
@@ -122,7 +122,7 @@ class Category(models.Model):
 
 class Schedule(models.Model):
     day = models.DateTimeField(verbose_name='дата и время занятия', null=False)
-    group = models.IntegerField(null=False, verbose_name="номер группы")
+    group = models.ForeignKey('Group', on_delete=models.PROTECT, verbose_name="номер группы")
 
     class Meta:
         verbose_name_plural = 'расписания'

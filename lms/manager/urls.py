@@ -1,6 +1,5 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from rest_framework_swagger.views import get_swagger_view
 
 from .views import GroupViewSet, CourseViewSet, CategoryViewSet, AudienceViewSet, AddressViewSet, UserViewSet, \
     RoleViewSet, ScheduleViewSet
@@ -15,8 +14,6 @@ api_router.register(r'address', AddressViewSet)
 api_router.register(r'user', UserViewSet)
 api_router.register(r'role', RoleViewSet)
 api_router.register(r'schedule', ScheduleViewSet)
-
-
 
 urlpatterns = [
     path('', include(api_router.urls))
