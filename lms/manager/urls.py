@@ -6,7 +6,6 @@ from .views import GroupViewSet, CourseViewSet, CategoryViewSet, AudienceViewSet
     RoleViewSet, ScheduleViewSet
 
 api_router = SimpleRouter()
-schema_view = get_swagger_view(title='LMS API')
 
 api_router.register(r'group', GroupViewSet)
 api_router.register(r'course', CourseViewSet)
@@ -20,6 +19,5 @@ api_router.register(r'schedule', ScheduleViewSet)
 
 
 urlpatterns = [
-    path('', include(api_router.urls)),
-    path(r'docs', schema_view)
+    path('', include(api_router.urls))
 ]

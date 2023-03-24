@@ -25,26 +25,31 @@ class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
 class GroupViewSet(ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 
 class AudienceViewSet(ModelViewSet):
     queryset = Audience.objects.all()
     serializer_class = AudienceSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 
 class AddressViewSet(ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 
 class UserViewSet(ModelViewSet):
@@ -62,6 +67,7 @@ class RoleViewSet(ModelViewSet):
 class ScheduleViewSet(ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
         days = request.data.get('days')
