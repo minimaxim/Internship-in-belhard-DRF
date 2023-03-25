@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'authentication.apps.AuthenticationConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser'
+    'djoser',
+    'drf_yasg',
+    'docs.apps.DocsConfig',
 ]
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
