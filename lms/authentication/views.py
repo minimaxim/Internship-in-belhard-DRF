@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import CustomUser
 from .serializers import RegisterSerializer, ChangePasswordSerializer
 from rest_framework import generics
-from .permissions import IsAdmin, IsAdminOrManager, IsAdminOrManagerOrMentor
+from .permissions import IsAdmin, IsStudent, IsManager, IsMentor, IsAdminOrManager, IsAdminOrManagerOrMentor
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
@@ -12,7 +12,7 @@ class MyObtainTokenPairView(TokenObtainPairView):
 
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = (IsAdminOrManager,)
+    permission_classes = (IsAdmin,)
     serializer_class = RegisterSerializer
 
 
