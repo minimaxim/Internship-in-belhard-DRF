@@ -2,24 +2,12 @@ from datetime import datetime
 
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Group, Course, Category, Audience, Address, User, Role, Schedule
+from .models import Group, Course, Category, Audience, Address, User, Role, Schedule, Feedback, Task
 from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
-    UserSerializer, RoleSerializer, ScheduleSerializer
-
-
-class IsManagerOrReadOnly(IsAuthenticatedOrReadOnly):
-
-    def has_permission(self, request, view):
-        return bool(
-            request.method in SAFE_METHODS or
-            request.user and
-            request.user.is_authenticated and
-            request.user.is_staff
-        )
+    UserSerializer, RoleSerializer, ScheduleSerializer, FeedbackSerializer, FeedbackAllSerializer, TaskSerializer
 
 
 class GroupViewSet(ModelViewSet):
@@ -83,3 +71,44 @@ class ScheduleViewSet(ModelViewSet):
                     pass
         header = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=header)
+
+
+class FeedbackForUserViewSet(ModelViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+    http_method_names = ['post',]
+    permission_classes = ['IsStudent',]
+
+
+class FeedbackTrueViewSet(ModelViewSet):
+    queryset = Feedback.objects.filter(is_published=True)
+    serializer_class = FeedbackSerializer
+    http_method_names = ['get',]
+
+
+class FeedbackAllViewSet(ModelViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackAllSerializer
+    http_method_names = ['get',]
+    permission_classes = ['IsAdminOrManager',]
+
+
+class FeedbackFalseViewSet(ModelViewSet):
+    queryset = Feedback.objects.filter(is_published=False)
+    serializer_class = FeedbackAllSerializer
+    http_method_names = ['get', 'put', 'delete']
+    permission_classes = ['IsAdminOrManager',]
+
+
+class TaskViewSet(ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    http_method_names = ['get', 'post', 'put', 'delete']
+    permission_classes = ['IsAdminOrManagerOrMentor',]
+
+
+class TaskUserViewSet(ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    http_method_names = ['get',]
+    permission_classes = ['IsStudent',]
