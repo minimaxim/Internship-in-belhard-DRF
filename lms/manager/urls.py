@@ -20,7 +20,7 @@ api_router.register(r'feedback-true', FeedbackTrueViewSet)
 api_router.register(r'feedback-all', FeedbackAllViewSet)
 api_router.register(r'feedback-false', FeedbackFalseViewSet)
 api_router.register(r'tasks', TaskViewSet)
-api_router.register(r'mytasks', TaskUserViewSet)
+api_router.register(r'mytasks', TaskUserViewSet, basename='MyTasks')
 
 urlpatterns = [
     path('', include(api_router.urls))

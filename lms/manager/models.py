@@ -35,8 +35,8 @@ class GroupUsers(models.Model):
                              default='Иванов')
     group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
-    def __str__(self):
-        return self.name
+    def __int__(self):
+        return self.user
 
     class Meta:
         verbose_name_plural = 'группа-юзер'

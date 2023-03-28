@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Group, Course, Category, Audience, Address, User, Role, Schedule, Feedback, Task
+from .models import Group, Course, Category, Audience, Address, User, Role, Schedule, Feedback, Task, GroupUsers
 from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
     UserSerializer, RoleSerializer, ScheduleSerializer, FeedbackSerializer, FeedbackAllSerializer, TaskSerializer
 
@@ -76,39 +76,61 @@ class ScheduleViewSet(ModelViewSet):
 class FeedbackForUserViewSet(ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
-    http_method_names = ['post',]
-    permission_classes = ['IsStudent',]
+    http_method_names = ['post', ]
+    permission_classes = ['IsStudent', ]
 
 
 class FeedbackTrueViewSet(ModelViewSet):
     queryset = Feedback.objects.filter(is_published=True)
     serializer_class = FeedbackSerializer
-    http_method_names = ['get',]
+    http_method_names = ['get', ]
 
 
 class FeedbackAllViewSet(ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackAllSerializer
-    http_method_names = ['get',]
-    permission_classes = ['IsAdminOrManager',]
+    http_method_names = ['get', ]
+    permission_classes = ['IsAdminOrManager', ]
 
 
 class FeedbackFalseViewSet(ModelViewSet):
     queryset = Feedback.objects.filter(is_published=False)
     serializer_class = FeedbackAllSerializer
     http_method_names = ['get', 'put', 'delete']
-    permission_classes = ['IsAdminOrManager',]
+    permission_classes = ['IsAdminOrManager', ]
 
 
 class TaskViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
-    permission_classes = ['IsAdminOrManagerOrMentor',]
+    # permission_classes = ['IsAdminOrManagerOrMentor', ]
 
 
 class TaskUserViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    http_method_names = ['get',]
-    permission_classes = ['IsStudent',]
+    http_method_names = ['get', ]
+    # permission_classes = ['IsStudent', ]
+
+    def list(self, request, *args, **kwargs):
+
+        my_schedule = Schedule.objects.all()
+        user_id = request.user.id
+        user = GroupUsers.objects.filter(user=user_id)
+
+        usergroups = []
+
+        for group in user:
+            usergroups.append(group.group)
+
+        pastdays = []
+
+        for day in my_schedule:
+            if datetime.now() > day.day and day.group in usergroups:
+                pastdays.append(day.id)
+
+        queryset = Task.objects.filter(day__in=pastdays)
+        serializer = TaskSerializer(queryset, many=True)
+        header = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=header)
