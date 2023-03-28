@@ -104,14 +104,14 @@ class TaskViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
-    # permission_classes = ['IsAdminOrManagerOrMentor', ]
+    permission_classes = ['IsAdminOrManagerOrMentor', ]
 
 
 class TaskUserViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     http_method_names = ['get', ]
-    # permission_classes = ['IsStudent', ]
+    permission_classes = ['IsStudent', ]
 
     def list(self, request, *args, **kwargs):
 
