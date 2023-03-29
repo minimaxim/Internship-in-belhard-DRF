@@ -1,40 +1,24 @@
 version: "3.9"
 
 services:
-  yt_postgres:
-    image: postgres:15
-    container_name: yt_postgres
+  db:
+    image: postgres
     volumes:
-      - ~/.pg/pg_data/yt:/var/lib/postgresql/data
-    env_file:
-      - .env
-  LMSBH3:
-    image: yt_django:latest
-    container_name: yt_django
-    depends_on:
-      - yt_postgres
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - static_volume:/yt/static
-      - media_volume:/yt/media
-    env_file:
-      - .env
-    command: >
-      bash -c "./manage.py collectstatic --noinput && ./manage.py migrate  && gunicorn -b 0.0.0.0:8000 lms.wsgi:application"
-  nginx:
-    build:
-      dockerfile: ./Dockerfile
-      context: ./docker/nginx/
-    container_name: yt_nginx
-    image: yt_nginx
-    volumes:
-      - static_volume:/yt/static
-      - media_volume:/yt/media
-    depends_on:
-      - LMSBH3
+      - .:/code
     ports:
-      - "${NGINX_EXTERNAL_PORT}:80"
-
-volumes:
-  static_volume:
-  media_volume:
-
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=lms
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1121
+    depends_on:
+      - db

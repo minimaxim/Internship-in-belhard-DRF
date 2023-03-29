@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,7 +27,7 @@ SECRET_KEY = "django-insecure-$g5+@%z-n2b*1m3-o!_%86hm=(&n)=$dg9s4-1c2j68fw5vdy(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -83,15 +82,16 @@ WSGI_APPLICATION = 'lms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+import os
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', 5432),
-        'USER': os.getenv('POSTGRES_USER', 'lms'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'NAME': os.getenv('POSTGRES_DB', "db01")
-    }
+'default': {
+'ENGINE': 'django.db.backends.postgresql',
+'NAME': os.environ.get('POSTGRES_NAME'),
+'USER': os.environ.get('POSTGRES_USER'),
+'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+'HOST': 'db',
+'PORT': 5432, #default port you don't need to mention in docker-compose
+}
 }
 
 
