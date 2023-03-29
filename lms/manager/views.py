@@ -62,13 +62,6 @@ class AddressViewSet(ModelViewSet):
         return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
 
 
-class RoleViewSet(ModelViewSet):
-    queryset = Role.objects.all()
-    serializer_class = RoleSerializer
-    permission_classes = [IsAdmin]
-    http_method_names = ['get', ]
-
-
 class ScheduleViewSet(ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
@@ -92,4 +85,5 @@ class ScheduleViewSet(ModelViewSet):
                 header = self.get_success_headers(serializer.data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=header)
             else:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail':f'duration must be equal {course.duration} or dates is not unique'})
+                return Response(status=status.HTTP_400_BAD_REQUEST,
+                                data={'detail': f'duration must be equal {course.duration} or dates is not unique'})

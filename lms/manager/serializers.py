@@ -35,12 +35,6 @@ class AddressSerializer(ModelSerializer):
         fields = ['id', 'address_name']
 
 
-class RoleSerializer(ModelSerializer):
-    class Meta:
-        model = Role
-        fields = ['id', 'name']
-
-
 class ScheduleSerializer(Serializer):
     def create(self, validated_data):
         return validated_data
