@@ -9,6 +9,7 @@ from .models import Group, Course, Category, Audience, Address, Schedule
 from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
     RoleSerializer, ScheduleSerializer
 from authentication.models import CustomUser, Role
+from authentication.permissions import IsAdminOrManager, IsAdminOrManagerOrMentor, IsAdminOrManagerOrReadOnly, IsAdmin
 
 
 class GroupViewSet(ModelViewSet):
@@ -64,7 +65,7 @@ class AddressViewSet(ModelViewSet):
 class RoleViewSet(ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-    permission_classes = [IsAdminOrManagerOrReadOnly]
+    permission_classes = [IsAdmin]
     http_method_names = ['get', ]
 
 
