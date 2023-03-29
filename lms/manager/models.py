@@ -1,10 +1,5 @@
 from django.db import models
-
-# from django.apps import apps
-# CustomUser = apps.get_model('authentication', 'CustomUser')
-
 from authentication.models import CustomUser
-
 
 
 class Group(models.Model):
@@ -12,7 +7,7 @@ class Group(models.Model):
     date_start = models.DateField(null=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=False, verbose_name="курс")
-    mentor = models.ForeignKey('CustomUser', on_delete=models.PROTECT, null=True, verbose_name="ментор")
+    mentor = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
     def __str__(self):
         return str(self.number)
@@ -23,7 +18,7 @@ class Group(models.Model):
 
 
 class GroupUsers(models.Model):
-    user = models.ForeignKey('CustomUser', null=False, on_delete=models.PROTECT, verbose_name="студент",
+    user = models.ForeignKey(CustomUser, null=False, on_delete=models.PROTECT, verbose_name="студент",
                              default='Иванов')
     group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
@@ -85,7 +80,7 @@ class PaymentInfo(models.Model):
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey('CustomUser', verbose_name='пользователь', on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, verbose_name='пользователь', on_delete=models.CASCADE)
     text = models.CharField(max_length=350, verbose_name='отзыв', null=True)
     is_published = models.BooleanField(verbose_name='опубликовано', default=False)
 
