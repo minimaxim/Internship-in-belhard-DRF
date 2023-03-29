@@ -1,12 +1,18 @@
 from django.db import models
 
+# from django.apps import apps
+# CustomUser = apps.get_model('authentication', 'CustomUser')
+
+from authentication.models import CustomUser
+
+
 
 class Group(models.Model):
     number = models.PositiveSmallIntegerField(verbose_name='номер группы')
     date_start = models.DateField(null=True, verbose_name='дата начала')
     audience = models.ForeignKey('Audience', on_delete=models.PROTECT, null=True, verbose_name="аудитория")
     course = models.ForeignKey('Course', on_delete=models.PROTECT, null=False, verbose_name="курс")
-    mentor = models.ForeignKey('User', on_delete=models.PROTECT, null=True, verbose_name="ментор")
+    mentor = models.ForeignKey('CustomUser', on_delete=models.PROTECT, null=True, verbose_name="ментор")
 
     def __str__(self):
         return str(self.number)
@@ -16,22 +22,8 @@ class Group(models.Model):
         verbose_name = 'группа'
 
 
-class User(models.Model):
-    first_name = models.CharField(max_length=64, verbose_name='имя')
-    last_name = models.CharField(max_length=64, verbose_name='фамилия')
-    email = models.EmailField(max_length=64, unique=True, null=False, verbose_name='е-майл')
-    role = models.ForeignKey('Role', on_delete=models.PROTECT, null=True, verbose_name="роль пользователя")
-
-    def __str__(self):
-        return self.first_name
-
-    class Meta:
-        verbose_name_plural = 'пользователи'
-        verbose_name = 'пользователи'
-
-
 class GroupUsers(models.Model):
-    user = models.ForeignKey('User', null=False, on_delete=models.PROTECT, verbose_name="студент",
+    user = models.ForeignKey('CustomUser', null=False, on_delete=models.PROTECT, verbose_name="студент",
                              default='Иванов')
     group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
@@ -41,14 +33,6 @@ class GroupUsers(models.Model):
     class Meta:
         verbose_name_plural = 'группа-юзер'
         verbose_name = 'группа-юзер'
-
-
-class Role(models.Model):
-    name = models.CharField(max_length=10, unique=True, verbose_name='роль пользователя', null=True, default='студент')
-
-    class Meta:
-        verbose_name_plural = 'роль пользователя'
-        verbose_name = 'роль пользователя'
 
 
 class Audience(models.Model):
@@ -101,7 +85,7 @@ class PaymentInfo(models.Model):
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', verbose_name='пользователь', on_delete=models.CASCADE)
     text = models.CharField(max_length=350, verbose_name='отзыв', null=True)
     is_published = models.BooleanField(verbose_name='опубликовано', default=False)
 
@@ -134,7 +118,6 @@ class Task(models.Model):
     day = models.ForeignKey('Schedule', on_delete=models.PROTECT, verbose_name="дата и время занятия")
     description = models.CharField(max_length=50, verbose_name='описание задачи', null=False)
     doc = models.CharField(max_length=1024, verbose_name='материалы по задаче', null=False)
-
 
     class Meta:
         verbose_name_plural = 'задачи'

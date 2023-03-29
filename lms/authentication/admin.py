@@ -14,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ['email', 'username', 'role']
+    list_display_links = ['username', 'email']
 
     add_fieldsets = (
         *UserAdmin.add_fieldsets,

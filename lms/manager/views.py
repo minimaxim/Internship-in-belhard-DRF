@@ -5,9 +5,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Group, Course, Category, Audience, Address, User, Role, Schedule, Feedback, Task, GroupUsers
+from .models import Group, Course, Category, Audience, Address, Schedule, Feedback, Task, GroupUsers
 from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
     UserSerializer, RoleSerializer, ScheduleSerializer, FeedbackSerializer, FeedbackAllSerializer, TaskSerializer
+from authentication.models import CustomUser, Role
 
 
 class GroupViewSet(ModelViewSet):
@@ -41,7 +42,7 @@ class AddressViewSet(ModelViewSet):
 
 
 class UserViewSet(ModelViewSet):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     http_method_names = ['post', ]
 

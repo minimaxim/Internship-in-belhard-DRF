@@ -1,7 +1,8 @@
 from rest_framework.fields import IntegerField, ListField, FloatField
 from rest_framework.serializers import ModelSerializer, Serializer
 
-from .models import Group, Course, Category, Audience, Address, User, Role, Feedback, Task
+from .models import Group, Course, Category, Audience, Address, Feedback, Task
+from authentication.models import CustomUser, Role
 
 
 class CourseSerializer(ModelSerializer):
@@ -36,8 +37,8 @@ class AddressSerializer(ModelSerializer):
 
 class UserSerializer(ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'role']
+        model = CustomUser
+        fields = ['id', 'first_name', 'last_name', 'email', 'role', 'username']
 
 
 class RoleSerializer(ModelSerializer):
