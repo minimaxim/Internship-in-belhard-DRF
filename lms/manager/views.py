@@ -41,12 +41,6 @@ class AddressViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'delete']
 
 
-class UserViewSet(ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
-    http_method_names = ['post', ]
-
-
 class RoleViewSet(ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
