@@ -2,8 +2,7 @@ from rest_framework.fields import IntegerField, ListField, FloatField
 from rest_framework.serializers import ModelSerializer, Serializer
 
 from .models import Group, Course, Category, Audience, Address
-from authentication.models import CustomUser, Role
-
+from authentication.models import CustomUser
 
 class CourseSerializer(ModelSerializer):
     class Meta:

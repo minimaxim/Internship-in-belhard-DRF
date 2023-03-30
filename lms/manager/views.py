@@ -7,7 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import Group, Course, Category, Audience, Address, Schedule
 from .serializers import GroupSerializer, CourseSerializer, CategorySerializer, AudienceSerializer, AddressSerializer, \
-    RoleSerializer, ScheduleSerializer
+    ScheduleSerializer
 from authentication.models import CustomUser, Role
 from authentication.permissions import IsAdminOrManager, IsAdminOrManagerOrMentor, IsAdminOrManagerOrReadOnly, IsAdmin
 

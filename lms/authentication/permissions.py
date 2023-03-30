@@ -29,7 +29,7 @@ class IsAdminOrManager(BasePermission):
 class IsAdminOrManagerOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         return bool(
-            request.methood == 'GET' or
+            request.method == 'GET' or
             request.user and request.user.role.name in ('administrator', 'manager')
         )
 
@@ -43,5 +43,5 @@ class IsAdminOrManagerOrMentor(BasePermission):
 class IsAdminOrManagerOrMentorOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         return bool(
-            request.methood == 'GET' or
+            request.method == 'GET' or
             request.user and request.user.role.name in ('administrator', 'manager', 'mentor'))
