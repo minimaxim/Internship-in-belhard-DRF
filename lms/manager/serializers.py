@@ -66,7 +66,7 @@ class FeedbackSerializer(ModelSerializer):
 class FeedbackAllSerializer(ModelSerializer):
     class Meta:
         model = Feedback
-        fields = ['id', 'user', 'text', 'is_published']
+        fields = ['id', 'user', 'text']
 
 
 class TaskSerializer(ModelSerializer):
