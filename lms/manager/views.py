@@ -77,7 +77,7 @@ class FeedbackViewSet(ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
-    permission_classes = [AllowAny]
+    permission_classes = ['AllowAny']
 
     def create(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -112,13 +112,7 @@ class TaskViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
-    # permission_classes = ['IsAdminOrManagerOrMentor', 'IsStudent']
-
-    def create(self, request, *args, **kwargs):
-        if request.user.role.name != 'student':
-            return super().create(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
-
+    permission_classes = ['AllowAny']
 
     def list(self, request, *args, **kwargs):
         if request.user.role.name == 'student':
@@ -126,20 +120,10 @@ class TaskViewSet(ModelViewSet):
             user_id = request.user.id
             user = GroupUsers.objects.filter(user=user_id)
 
-            usergroups = []
+            user_groups = list(map(lambda group: group.group, user))
+            past_days = list(map(lambda day: datetime.now() > day.day and day.group in user_groups, my_schedule))
 
-            for group in user:
-                usergroups.append(group.group)
-
-            usergroups1 = list(map(lambda group: group.group, user))
-
-            pastdays = []
-
-            for day in my_schedule:
-                if datetime.now() > day.day and day.group in usergroups:
-                    pastdays.append(day.id)
-
-            queryset = Task.objects.filter(day__in=pastdays)
+            queryset = Task.objects.filter(day__in=past_days)
             serializer = TaskSerializer(queryset, many=True)
             header = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK, headers=header)
@@ -148,28 +132,21 @@ class TaskViewSet(ModelViewSet):
             mentor_id = request.user.id
             groups = Group.objects.filter(mentor=mentor_id)
 
-            mentor_groups = []
-
-            for group in groups:
-                mentor_groups.append(group.id)
-
+            mentor_groups = list(map(lambda group: group.group, groups))
             mentor_schedule = Schedule.objects.filter(group__in=mentor_groups)
-
-            mentor_days = []
-
-            for day in mentor_schedule:
-                mentor_days.append(day.id)
+            mentor_days = list(map(lambda day: day in mentor_schedule, mentor_schedule))
 
             queryset = Task.objects.filter(day__in=mentor_days)
             serializer = TaskSerializer(queryset, many=True)
             header = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK, headers=header)
-
-        else:
+        elif request.user.role.name == 'administrator' or request.user.role.name == 'manager':
             queryset = Task.objects.all()
             serializer = TaskSerializer(queryset, many=True)
             header = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK, headers=header)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
 
     def update(self, request, *args, **kwargs):
         if request.user.role.name == 'administrator' or request.user.role.name == 'manager':
@@ -179,23 +156,16 @@ class TaskViewSet(ModelViewSet):
             mentor_id = request.user.id
             groups = Group.objects.filter(mentor=mentor_id)
 
-            mentor_groups = []
-
-            for group in groups:
-                mentor_groups.append(group.id)
-
-            mentor_schedule = Schedule.objects.filter(group__in=mentor_groups)
-
-            mentor_days = []
-
-            for day in mentor_schedule:
-                mentor_days.append(day.id)
+            mentorgroups = list(map(lambda group: group.group, groups))
+            mentor_schedule = Schedule.objects.filter(group__in=mentorgroups)
+            mentor_days = list(map(lambda day: day in mentor_schedule, mentor_schedule))
 
             queryset = Task.objects.filter(day__in=mentor_days)
             serializer = TaskSerializer(queryset, many=True)
             header = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK, headers=header)
-        return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
 
     def destroy(self, request, *args, **kwargs):
         if request.user.role.name == 'administrator' or request.user.role.name == 'manager':
@@ -205,21 +175,17 @@ class TaskViewSet(ModelViewSet):
             mentor_id = request.user.id
             groups = Group.objects.filter(mentor=mentor_id)
 
-            mentor_groups = []
+            mentor_id = request.user.id
+            groups = Group.objects.filter(mentor=mentor_id)
 
-            for group in groups:
-                mentor_groups.append(group.id)
-
-            mentor_schedule = Schedule.objects.filter(group__in=mentor_groups)
-
-            mentor_days = []
-
-            for day in mentor_schedule:
-                mentor_days.append(day.id)
+            mentorgroups = list(map(lambda group: group.group, groups))
+            mentor_schedule = Schedule.objects.filter(group__in=mentorgroups)
+            mentor_days = list(map(lambda day: day in mentor_schedule, mentor_schedule))
 
             queryset = Task.objects.filter(day__in=mentor_days)
             serializer = TaskSerializer(queryset, many=True)
             header = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK, headers=header)
-        return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'permission'})
 
