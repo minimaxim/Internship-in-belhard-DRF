@@ -7,7 +7,8 @@ from drf_yasg import openapi
 schema_view = get_schema_view(
    openapi.Info(
       title="LMS API",
-      default_version='v1'
+      default_version='v1',
+      description='Строка для описания ..........',
    ),
    public=True,
    permission_classes=[permissions.AllowAny],
