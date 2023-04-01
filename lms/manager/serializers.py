@@ -43,3 +43,16 @@ class ScheduleSerializer(Serializer):
 
     group = IntegerField()
     days = ListField(min_length=1, child=FloatField())
+
+
+class FeedbackSerializer(ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = ['user', 'text']
+
+
+class TaskSerializer(ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['id', 'day', 'description', 'doc']
+
