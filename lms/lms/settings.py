@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-$g5+@%z-n2b*1m3-o!_%86hm=(&n)=$dg9s4-1c2j68fw5vdy(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -83,15 +83,16 @@ WSGI_APPLICATION = 'lms.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 import os
+
 DATABASES = {
-'default': {
-'ENGINE': 'django.db.backends.postgresql',
-'NAME': os.environ.get('POSTGRES_NAME'),
-'USER': os.environ.get('POSTGRES_USER'),
-'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-'HOST': 'db',
-'PORT': 5432, #default port you don't need to mention in docker-compose
-}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'lms',
+        'USER': 'postgres',
+        'PASSWORD': '1121',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 
