@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
 from .views import GroupViewSet, CourseViewSet, CategoryViewSet, AudienceViewSet, AddressViewSet, UserViewSet, \
-    RoleViewSet, ScheduleViewSet
+    RoleViewSet, ScheduleViewSet, TaskViewSet, FeedbackViewSet
 
 api_router = SimpleRouter()
 
@@ -14,6 +14,8 @@ api_router.register(r'address', AddressViewSet)
 api_router.register(r'user', UserViewSet)
 api_router.register(r'role', RoleViewSet)
 api_router.register(r'schedule', ScheduleViewSet)
+api_router.register(r'feedback', FeedbackViewSet, basename='Feedback')
+api_router.register(r'tasks', TaskViewSet, basename='Tasks')
 
 urlpatterns = [
     path('', include(api_router.urls))

@@ -35,8 +35,8 @@ class GroupUsers(models.Model):
                              default='Иванов')
     group = models.ForeignKey('Group', verbose_name='номер группы', on_delete=models.PROTECT, default=1)
 
-    def __str__(self):
-        return self.name
+    def __int__(self):
+        return self.user
 
     class Meta:
         verbose_name_plural = 'группа-юзер'
@@ -53,7 +53,7 @@ class Role(models.Model):
 
 class Audience(models.Model):
     number = models.PositiveSmallIntegerField(verbose_name='номер аудитории')
-    is_online = models.BooleanField(verbose_name='онлайн')
+    is_online = models.BooleanField(verbose_name='онлайн', default=False)
     address = models.ForeignKey('Address', on_delete=models.PROTECT, verbose_name="адрес аудитории")
 
     def __str__(self):
@@ -101,8 +101,9 @@ class PaymentInfo(models.Model):
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE, default='0')
+    user = models.ForeignKey('User', verbose_name='пользователь', on_delete=models.CASCADE)
     text = models.CharField(max_length=350, verbose_name='отзыв', null=True)
+    is_published = models.BooleanField(verbose_name='опубликовано', default=False)
 
     class Meta:
         verbose_name_plural = 'отзывы'
@@ -127,3 +128,14 @@ class Schedule(models.Model):
     class Meta:
         verbose_name_plural = 'расписания'
         verbose_name = 'расписание'
+
+
+class Task(models.Model):
+    day = models.ForeignKey('Schedule', on_delete=models.PROTECT, verbose_name="дата и время занятия")
+    description = models.CharField(max_length=50, verbose_name='описание задачи', null=False)
+    doc = models.CharField(max_length=1024, verbose_name='материалы по задаче', null=False)
+
+
+    class Meta:
+        verbose_name_plural = 'задачи'
+        verbose_name = 'задача'
